@@ -69,17 +69,17 @@ function ensureIndex() {
 }
 
 storage_services.init = function(env, callback) {
-	require('mongodb').connect(env.mongoURL, function(err, conn) {
+	const MongoClient = require('mongodb').MongoClient
+	MongoClient.connect(env.mongoURL, function(err, client) {
 		if (err) {
-			callback(err);
+			callback(err)
 			return;
 		}
-
-		db = conn;
-		storage_services.graphs = graphs();
-		console.log("Connected to MongoDB at: "+env.mongoURL);
-		ensureIndex();
-		callback();
+		db = client.db(env.dbName)
+		storage_services.graphs = graphs()
+		console.log("Connected to MongoDB at: "+env.mongoURL+"/"+env.dbName)
+		ensureIndex()
+		callback()
 	});
 };
 
@@ -110,8 +110,6 @@ storage_services.releaseURI = function(uri) {
 };
 
 storage_services.put = function(doc, callback) {
-	console.log('db.put');
-	console.dir(doc);
 	graphs().update({
 		name: doc.name
 	}, doc, {
@@ -121,14 +119,12 @@ storage_services.put = function(doc, callback) {
 };
 
 storage_services.get = function(uri, callback) {
-	console.log('db.get');
 	graphs().find({
 		name: uri
 	}, {
 		limit: 1
 	}).toArray(function(err, docs) {
 		if (docs && docs[0]) {
-			console.dir(docs[0]);
 			callback(err, docs[0]);
 		} else {
 			callback(err);
