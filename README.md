@@ -1,7 +1,9 @@
 # ldp-service-mongodb
 
-This is a concrete implementation of the ldp-service storage facility using MongoDB.
+[![Discourse status](https://img.shields.io/discourse/https/meta.discourse.org/status.svg)](https://forum.open-services.net/)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/OSLC/chat)
 
+This is a concrete implementation of the ldp-service storage facility using MongoDB.
 
 ## Using
 
